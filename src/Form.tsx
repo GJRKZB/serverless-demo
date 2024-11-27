@@ -1,5 +1,5 @@
 import { useState } from "react";
-// import axios from "axios";
+import axios from "axios";
 
 interface IFormData {
   name: string;
@@ -7,6 +7,7 @@ interface IFormData {
 
 export const Form = () => {
   const [formData, setFormData] = useState<IFormData>({ name: "" });
+  const apiUrl = import.meta.env.VITE_API_URL;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -19,15 +20,13 @@ export const Form = () => {
 
   const handleSubmit = async (e: React.ChangeEvent<HTMLFormElement>) => {
     e.preventDefault();
-    alert(formData.name);
-    handleReset();
-    console.log(formData);
-    // try {
-    //   const response = await axios.post("http://localhost:3000", formData);
-    //   console.log(response);
-    // } catch (error) {
-    //   console.error(error);
-    // }
+    try {
+      const response = await axios.post(apiUrl, formData);
+      console.log(response.data.message);
+      handleReset();
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <>
